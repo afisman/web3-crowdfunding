@@ -1,4 +1,5 @@
 require("@matterlabs/hardhat-zksync-solc");
+require('dotenv/config')
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -33,6 +34,14 @@ module.exports = {
   },
   solidity: {
     version: "0.8.17",
+    defaultNetwork: 'sepolia',
+    networks: {
+      hardhat: {},
+      sepolia: {
+        url: process.env.ALCHEMY_SEPOLIA_URL,
+        accounts: [`0x${process.env.SEPOLIA_PRIVATE_KEY}`]
+      }
+    },
     settings: {
       optimizer: {
         enabled: true,
