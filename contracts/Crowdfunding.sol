@@ -1,7 +1,14 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
+enum CrowdfundingState {
+    active,
+    finished
+}
+
 contract Crowdfunding {
+    address owner;
+
     struct Campaign {
         address owner;
         string title;
@@ -12,13 +19,29 @@ contract Crowdfunding {
         string image;
         address[] donators;
         uint256[] donations;
+        CrowdfundingState state;
     }
 
     mapping(uint256 => Campaign) public campaigns;
 
     uint256 public numberOfCampaigns = 0;
 
-    constructor() {}
+    event Deployed(address indexed owner);
+
+    event CampaignCreated(
+        address indexed owner,
+        uint target,
+        CrowdfundingState isActive
+    );
+
+    event Donation(address indexed donator, uint donation);
+
+    event CampaignEnded(uint256 _id);
+
+    constructor() {
+        emit Deployed(msg.sender);
+        owner = msg.sender;
+    }
 
     function createCampaign(
         address _owner,
@@ -29,6 +52,8 @@ contract Crowdfunding {
         string memory _image
     ) public returns (uint256) {
         Campaign storage campaign = campaigns[numberOfCampaigns];
+
+        emit CampaignCreated(_owner, _target, CrowdfundingState.active);
 
         require(
             campaign.deadline < block.timestamp,
@@ -42,6 +67,7 @@ contract Crowdfunding {
         campaign.amountCollected = 0;
         campaign.deadline = _deadline;
         campaign.image = _image;
+        campaign.state = CrowdfundingState.active;
         numberOfCampaigns++;
 
         return numberOfCampaigns - 1;
@@ -51,12 +77,28 @@ contract Crowdfunding {
         uint256 amount = msg.value;
 
         Campaign storage campaign = campaigns[_id];
+        require(
+            campaign.state == CrowdfundingState.active,
+            "The campaign has already finished"
+        );
+
         campaign.donators.push(msg.sender);
         campaign.donations.push(amount);
+
+        emit Donation(msg.sender, amount);
 
         (bool success, ) = payable(campaign.owner).call{value: amount}("");
         if (success) {
             campaign.amountCollected = campaign.amountCollected + amount;
+        }
+
+        if (
+            campaign.amountCollected >= campaign.target ||
+            campaign.deadline > block.timestamp
+        ) {
+            campaign.state = CrowdfundingState.finished;
+
+            emit CampaignEnded(_id);
         }
     }
 
