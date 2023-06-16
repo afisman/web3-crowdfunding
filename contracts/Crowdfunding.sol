@@ -7,7 +7,8 @@ enum CrowdfundingState {
 }
 
 contract Crowdfunding {
-    address owner;
+    address public owner;
+    uint256 public numberOfCampaigns;
 
     struct Campaign {
         address owner;
@@ -24,8 +25,6 @@ contract Crowdfunding {
 
     mapping(uint256 => Campaign) public campaigns;
 
-    uint256 public numberOfCampaigns = 0;
-
     event Deployed(address indexed owner);
 
     event CampaignCreated(
@@ -41,6 +40,7 @@ contract Crowdfunding {
     constructor() {
         emit Deployed(msg.sender);
         owner = msg.sender;
+        numberOfCampaigns = 0;
     }
 
     function createCampaign(
@@ -117,5 +117,9 @@ contract Crowdfunding {
         }
 
         return allCampaings;
+    }
+
+    function getNumberOfCampaigns() public view returns (uint) {
+        return numberOfCampaigns;
     }
 }
