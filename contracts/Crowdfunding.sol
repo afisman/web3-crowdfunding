@@ -56,7 +56,7 @@ contract Crowdfunding {
         emit CampaignCreated(_owner, _target, CrowdfundingState.active);
 
         require(
-            block.timestamp < campaign.deadline,
+            campaign.deadline >= block.timestamp,
             "The deadline should be in the future"
         );
 
@@ -108,7 +108,7 @@ contract Crowdfunding {
         return (campaigns[_id].donators, campaigns[_id].donations);
     }
 
-    function getcampaigns() public view returns (Campaign[] memory) {
+    function getCampaigns() public view returns (Campaign[] memory) {
         Campaign[] memory allCampaings = new Campaign[](numberOfCampaigns);
 
         for (uint i = 0; i < numberOfCampaigns; i++) {
