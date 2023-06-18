@@ -20,19 +20,15 @@ describe('Crowdfunding', async function () {
     }
     describe('Deployment', () => {
         it("Should deploy a Crowdfunding", async function () {
-            const { crowdfunding } = await loadFixture(async () => {
-                return await deployContractAndSetVariables();
-            });
+            const { crowdfunding } = await loadFixture(deployContractAndSetVariables);
 
-            expect(crowdfunding.address).to.not.be.empty;
+            expect(crowdfunding.owner).to.not.be.empty;
         });
 
         it('should deploy and set the number of campaigns correctly', async () => {
-            const { crowdfunding } = await loadFixture(async () => {
-                return await deployContractAndSetVariables();
-            });
+            const { crowdfunding } = await loadFixture(deployContractAndSetVariables);
 
-            expect(await crowdfunding.getNumberOfCampaigns()).to.equal(ethers.BigNumber.from(0));
+            expect(await crowdfunding.getNumberOfCampaigns()).to.equal(0);
         });
     })
 

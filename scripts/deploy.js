@@ -10,7 +10,7 @@ async function main() {
     await crowdfunding.deployed
 
     console.log(
-        `Governor deployed to ${crowdfunding.owner}`,
+        `Crowdfunding deployed to ${crowdfunding.owner}`,
     );
 }
 
