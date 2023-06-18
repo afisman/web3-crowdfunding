@@ -56,7 +56,7 @@ contract Crowdfunding {
         emit CampaignCreated(_owner, _target, CrowdfundingState.active);
 
         require(
-            campaign.deadline < block.timestamp,
+            block.timestamp < campaign.deadline,
             "The deadline should be in the future"
         );
 
@@ -119,7 +119,7 @@ contract Crowdfunding {
         return allCampaings;
     }
 
-    function getNumberOfCampaigns() public view returns (uint) {
+    function getNumberOfCampaigns() public view returns (uint256) {
         return numberOfCampaigns;
     }
 }
