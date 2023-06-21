@@ -7,7 +7,7 @@ async function main() {
     const Crowdfunding = await hre.ethers.getContractFactory("Crowdfunding");
     const crowdfunding = await Crowdfunding.deploy();
 
-    await crowdfunding.deployed
+    await crowdfunding.deployed()
 
     console.log(
         `Crowdfunding deployed to ${crowdfunding.owner}`,

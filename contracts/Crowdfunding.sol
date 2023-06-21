@@ -56,7 +56,7 @@ contract Crowdfunding {
         emit CampaignCreated(_owner, _target, CrowdfundingState.active);
 
         require(
-            campaign.deadline >= block.timestamp,
+            campaign.deadline > block.timestamp,
             "The deadline should be in the future"
         );
 
