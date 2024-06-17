@@ -34,14 +34,13 @@ module.exports = {
   },
   solidity: {
     version: "0.8.17",
-    defaultNetwork: 'goerli',
+    defaultNetwork: 'sepolia',
     networks: {
       hardhat: {
-
-        url: process.env.ALCHEMY_SEPOLIA_URL,
-        accounts: [`0x${process.env.SEPOLIA_PRIVATE_KEY}`]
+        // url: process.env.ALCHEMY_SEPOLIA_URL,
+        // accounts: [`0x${process.env.SEPOLIA_PRIVATE_KEY}`]
       },
-      goerli: {
+      sepolia: {
         url: process.env.ALCHEMY_SEPOLIA_URL,
 
         accounts: [`0x${process.env.SEPOLIA_PRIVATE_KEY}`]

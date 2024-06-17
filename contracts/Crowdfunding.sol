@@ -8,7 +8,7 @@ enum CrowdfundingState {
 
 contract Crowdfunding {
     address public owner;
-    uint256 public numberOfCampaigns;
+    uint256 public numberOfCampaigns = 0;
 
     struct Campaign {
         address owner;
@@ -53,12 +53,12 @@ contract Crowdfunding {
     ) public returns (uint256) {
         Campaign storage campaign = campaigns[numberOfCampaigns];
 
-        emit CampaignCreated(_owner, _target, CrowdfundingState.active);
-
         require(
             campaign.deadline < block.timestamp,
             "The deadline should be in the future"
         );
+
+        emit CampaignCreated(_owner, _target, CrowdfundingState.active);
 
         campaign.owner = _owner;
         campaign.title = _title;
@@ -109,14 +109,14 @@ contract Crowdfunding {
     }
 
     function getCampaigns() public view returns (Campaign[] memory) {
-        Campaign[] memory allCampaings = new Campaign[](numberOfCampaigns);
+        Campaign[] memory allCampaigns = new Campaign[](numberOfCampaigns);
 
         for (uint i = 0; i < numberOfCampaigns; i++) {
             Campaign storage item = campaigns[i];
-            allCampaings[i] = item;
+            allCampaigns[i] = item;
         }
 
-        return allCampaings;
+        return allCampaigns;
     }
 
     function getNumberOfCampaigns() public view returns (uint256) {
