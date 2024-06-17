@@ -36,12 +36,9 @@ module.exports = {
     version: "0.8.17",
     defaultNetwork: 'sepolia',
     networks: {
-      hardhat: {
-        // url: process.env.ALCHEMY_SEPOLIA_URL,
-        // accounts: [`0x${process.env.SEPOLIA_PRIVATE_KEY}`]
-      },
+      hardhat: {},
       sepolia: {
-        url: process.env.ALCHEMY_SEPOLIA_URL,
+        url: "https://rpc.ankr.com/eth_sepolia",
 
         accounts: [`0x${process.env.SEPOLIA_PRIVATE_KEY}`]
       }
